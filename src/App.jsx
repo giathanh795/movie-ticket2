@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MtkFooter from './components/MtkFooter';
+import PageTransitionLoader from './components/PageTransitionLoader';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -33,6 +34,9 @@ function AppLayout({ children, onSearch, currentUserProfile }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-red-500 selection:text-white">
+      {/* Top Loading Progress Bar across all page transitions */}
+      <PageTransitionLoader />
+
       {/* Do not render standard cinema navbar on dedicated Staff and Admin Portals */}
       {!isDashboard && (
         <Navbar onSearch={onSearch} currentUserProfile={currentUserProfile} />

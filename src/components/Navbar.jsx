@@ -132,13 +132,19 @@ export default function Navbar({ onSearch, currentUserProfile }) {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          <Link
-            to="/movies"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-red-600/30 hover:scale-105 active:scale-95 transition-all"
+          <button
+            onClick={() => {
+              if (!isUserLoggedIn) {
+                navigate('/login');
+              } else {
+                navigate('/movies');
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-red-600/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
             <Ticket className="w-4 h-4 fill-white" />
             <span>MUA VÉ NGAY</span>
-          </Link>
+          </button>
 
           {/* Admin Dashboard Pill */}
           {isAdmin && (

@@ -14,9 +14,18 @@ import {
   Zap,
   ArrowRight
 } from 'lucide-react';
+import { isAuthenticated } from '../api';
 
 export default function HomePage({ movies = [], loading = false }) {
   const navigate = useNavigate();
+
+  const handleMovieAction = (movie) => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+      return;
+    }
+    navigate(`/movies/${movie.id}`);
+  };
 
   const getAgeRatingBadge = (rating) => {
     switch (rating) {
@@ -40,8 +49,8 @@ export default function HomePage({ movies = [], loading = false }) {
       {/* 1. Hero Banner Carousel */}
       <HeroBanner
         movies={movies}
-        onBookNow={(movie) => navigate(`/movies/${movie.id}`)}
-        onMovieDetail={(movie) => navigate(`/movies/${movie.id}`)}
+        onBookNow={(movie) => handleMovieAction(movie)}
+        onMovieDetail={(movie) => handleMovieAction(movie)}
         onNavigate={(path) => navigate(path)}
         onOpenRegister={() => navigate('/register')}
       />
@@ -150,7 +159,10 @@ export default function HomePage({ movies = [], loading = false }) {
                 className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group hover:-translate-y-1"
               >
                 {/* Poster Container */}
-                <div className="relative aspect-[2/3] overflow-hidden bg-slate-900">
+                <div
+                  className="relative aspect-[2/3] overflow-hidden bg-slate-900 cursor-pointer"
+                  onClick={() => handleMovieAction(movie)}
+                >
                   <img
                     src={movie.posterUrl}
                     alt={movie.title}
@@ -171,19 +183,25 @@ export default function HomePage({ movies = [], loading = false }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <p className="text-xs text-slate-300 line-clamp-3 mb-3">{movie.synopsis}</p>
                     <div className="flex gap-2">
-                      <Link
-                        to={`/movies/${movie.id}`}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMovieAction(movie);
+                        }}
                         className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs text-center transition-colors shadow-sm flex items-center justify-center gap-1.5"
                       >
                         <Ticket className="w-3.5 h-3.5" />
                         Mua Vé
-                      </Link>
-                      <Link
-                        to={`/movies/${movie.id}`}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMovieAction(movie);
+                        }}
                         className="px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs backdrop-blur-xs transition-colors flex items-center justify-center"
                       >
                         Chi Tiết
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -192,7 +210,8 @@ export default function HomePage({ movies = [], loading = false }) {
                 <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
                   <div>
                     <h3
-                      className="font-black text-sm sm:text-base text-slate-900 group-hover:text-red-600 transition-colors line-clamp-1 mb-1"
+                      onClick={() => handleMovieAction(movie)}
+                      className="font-black text-sm sm:text-base text-slate-900 group-hover:text-red-600 transition-colors line-clamp-1 mb-1 cursor-pointer"
                       title={movie.title}
                     >
                       {movie.title}
@@ -207,12 +226,12 @@ export default function HomePage({ movies = [], loading = false }) {
                       <Clock className="w-3.5 h-3.5 text-slate-400" />
                       {movie.durationMinutes} phút
                     </span>
-                    <Link
-                      to={`/movies/${movie.id}`}
+                    <button
+                      onClick={() => handleMovieAction(movie)}
                       className="font-bold text-red-600 hover:underline flex items-center gap-0.5"
                     >
                       Đặt ngay
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
