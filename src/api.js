@@ -100,6 +100,120 @@ export async function loginKeycloak(username = 'customer', password = '123456') 
   }
 }
 
+// --- ADMIN MOVIE CRUD ---
+export async function createMovie(movieData) {
+  const res = await fetch(`${API_BASE}/movies`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(movieData),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Thêm phim mới thất bại');
+  return json.data || json;
+}
+
+export async function updateMovie(movieId, movieData) {
+  const res = await fetch(`${API_BASE}/movies/${movieId}`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(movieData),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Cập nhật phim thất bại');
+  return json.data || json;
+}
+
+export async function archiveMovie(movieId) {
+  const res = await fetch(`${API_BASE}/movies/${movieId}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Xóa/Lưu trữ phim thất bại');
+  return json.data || json;
+}
+
+// --- ADMIN CINEMA & SCREEN CRUD ---
+export async function createCinema(cinemaData) {
+  const res = await fetch(`${API_BASE}/cinemas`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(cinemaData),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Thêm rạp mới thất bại');
+  return json.data || json;
+}
+
+export async function createScreen(cinemaId, screenData) {
+  const res = await fetch(`${API_BASE}/cinemas/${cinemaId}/screens`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(screenData),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Thêm phòng chiếu thất bại');
+  return json.data || json;
+}
+
+export async function getCinemaScreens(cinemaId) {
+  try {
+    const res = await fetch(`${API_BASE}/cinemas/${cinemaId}/screens`, {
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error('Fetch screens error');
+    const json = await res.json();
+    return json.data || json;
+  } catch (e) {
+    return [
+      { id: '32000000-0000-0000-0000-000000000001', name: 'Phòng Chiếu 1 (IMAX Laser)', screenType: 'IMAX' },
+      { id: '32000000-0000-0000-0000-000000000002', name: 'Phòng Chiếu 2 (Dolby Atmos)', screenType: 'STANDARD' },
+    ];
+  }
+}
+
+// --- SHOWTIME & BOOKING CRUD ---
+export async function createShowtime(showtimeData) {
+  const res = await fetch(`${API_BASE}/showtimes`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(showtimeData),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Tạo suất chiếu mới thất bại');
+  return json.data || json;
+}
+
+export async function cancelShowtime(showtimeId) {
+  const res = await fetch(`${API_BASE}/showtimes/${showtimeId}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Hủy suất chiếu thất bại');
+  return json.data || json;
+}
+
+export async function cancelBooking(bookingId) {
+  const res = await fetch(`${API_BASE}/bookings/${bookingId}/cancel`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ reason: 'Khách hàng yêu cầu hủy vé' }),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Hủy vé thất bại');
+  return json.data || json;
+}
+
+export async function getBookingById(bookingId) {
+  const res = await fetch(`${API_BASE}/bookings/${bookingId}`, {
+    headers: getHeaders(),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Không tìm thấy thông tin vé');
+  return json.data || json;
+}
+
 export function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
