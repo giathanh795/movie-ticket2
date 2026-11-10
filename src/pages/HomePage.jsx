@@ -55,8 +55,8 @@ export default function HomePage({ movies = [], loading = false }) {
         onOpenRegister={() => navigate('/register')}
       />
 
-      {/* 2. Quick Feature Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-6 relative z-10">
+      {/* 2. Quick Feature Bar (Placed completely below the banner with generous breathing room) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 sm:mt-10 relative z-10">
         <div className="bg-white rounded-2xl shadow-lg border border-slate-200/80 p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           <Link
             to="/movies"
