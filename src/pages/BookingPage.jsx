@@ -70,8 +70,7 @@ export default function BookingPage() {
     setErrorMsg('');
 
     try {
-      const showtimeSeatIds = selectedSeats.map((s) => s.id);
-      const booking = await createBooking(showtimeId, showtimeSeatIds);
+      const booking = await createBooking(showtimeId, selectedSeats);
       navigate(`/payment/${booking.id || booking.bookingId}`);
     } catch (err) {
       setErrorMsg(err.message || 'Đặt vé thất bại! Ghế đã được đặt hoặc bị giữ chỗ.');
