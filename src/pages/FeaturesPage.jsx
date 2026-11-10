@@ -1,7 +1,19 @@
 import React from 'react';
-import { Tv, Volume2, Armchair, Sparkles, CheckCircle2, Ticket } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Tv, Volume2, Armchair, Sparkles, CheckCircle2, Ticket, ArrowRight, Film } from 'lucide-react';
+import { isAuthenticated } from '../api';
 
-export default function FeaturesPage({ onBookNow }) {
+export default function FeaturesPage() {
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+    } else {
+      navigate('/movies');
+    }
+  };
+
   const features = [
     {
       id: 'imax',
@@ -70,87 +82,92 @@ export default function FeaturesPage({ onBookNow }) {
   ];
 
   return (
-    <div className="w-full pb-16 animate-in fade-in duration-300 space-y-12">
-      {/* Header Banner */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-red-950/80 via-neutral-900 to-red-950/80 border border-neutral-800 p-8 sm:p-12 mb-10 shadow-2xl">
-        <div className="relative z-10 max-w-2xl">
-          <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-600 text-white inline-block mb-3 shadow-md shadow-red-950">
-            MTK SIGNATURE EXPERIENCES
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            CÔNG NGHỆ & ĐẶC TRƯNG MTK
-          </h1>
-          <p className="text-neutral-300 text-sm mt-3 leading-relaxed">
-            Khám phá những công nghệ phòng chiếu và tiện ích độc quyền làm nên thương hiệu MTK Cinemas.
-          </p>
+    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-10">
+        {/* Header Banner */}
+        <div className="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl">
+            <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 inline-block mb-3 backdrop-blur-xs">
+              MTK SIGNATURE EXPERIENCES
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight">
+              CÔNG NGHỆ & ĐẶC TRƯNG MTK
+            </h1>
+            <p className="text-red-100 text-sm sm:text-base mt-3 leading-relaxed">
+              Khám phá hệ sinh thái phòng chiếu tiêu chuẩn quốc tế và những công nghệ nghe nhìn độc quyền định hình thương hiệu MTK Cinemas.
+            </p>
+          </div>
+          <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-x-12 translate-y-12">
+            <Film className="w-80 h-80" />
+          </div>
         </div>
-      </div>
 
-      {/* Feature Sections */}
-      <div className="space-y-10">
-        {features.map((feat, idx) => {
-          const IconComp = feat.icon;
-          const isEven = idx % 2 === 1;
+        {/* Feature Sections */}
+        <div className="space-y-8">
+          {features.map((feat, idx) => {
+            const IconComp = feat.icon;
+            const isEven = idx % 2 === 1;
 
-          return (
-            <div
-              key={feat.id}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-neutral-900/60 border border-neutral-800 rounded-3xl p-6 sm:p-10 shadow-xl ${
-                isEven ? 'lg:flex-row-reverse' : ''
-              }`}
-            >
-              <div className={`space-y-4 ${isEven ? 'lg:order-2' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-950">
-                    <IconComp className="w-5 h-5" />
-                  </div>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                    {feat.badge}
-                  </span>
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
-                  {feat.title}
-                </h2>
-                <p className="text-xs font-bold text-red-400 uppercase tracking-wider">
-                  {feat.subtitle}
-                </p>
-                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-                  {feat.description}
-                </p>
-
-                {/* Highlights */}
-                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  {feat.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2 text-neutral-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{h}</span>
+            return (
+              <div
+                key={feat.id}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm ${
+                  isEven ? 'lg:flex-row-reverse' : ''
+                }`}
+              >
+                <div className={`space-y-4 ${isEven ? 'lg:order-2' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-xs">
+                      <IconComp className="w-5 h-5" />
                     </div>
-                  ))}
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                      {feat.badge}
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight">
+                    {feat.title}
+                  </h2>
+                  <p className="text-xs font-bold text-red-600 uppercase tracking-wider">
+                    {feat.subtitle}
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {feat.description}
+                  </p>
+
+                  {/* Highlights */}
+                  <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    {feat.highlights.map((h, i) => (
+                      <div key={i} className="flex items-start gap-2 text-slate-700 font-medium">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{h}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      onClick={handleBookNow}
+                      className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm shadow-red-200 transition-all hover:scale-105 active:scale-95"
+                    >
+                      <Ticket className="w-4 h-4" />
+                      <span>Trải Nghiệm Suất Chiếu Này</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="pt-4">
-                  <button
-                    onClick={onBookNow}
-                    className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-red-950 transition-all hover:scale-105 active:scale-95"
-                  >
-                    <Ticket className="w-4 h-4" />
-                    <span>Trải Nghiệm Ngay</span>
-                  </button>
+                <div className={`relative rounded-3xl overflow-hidden border border-slate-200 shadow-md aspect-[16/10] ${isEven ? 'lg:order-1' : ''}`}>
+                  <img
+                    src={feat.image}
+                    alt={feat.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
                 </div>
               </div>
-
-              <div className={`relative rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl aspect-[16/10] ${isEven ? 'lg:order-1' : ''}`}>
-                <img
-                  src={feat.image}
-                  alt={feat.title}
-                  className="w-full h-full object-cover filter brightness-[0.85] hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-60" />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

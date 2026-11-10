@@ -4,7 +4,7 @@ import Logo from '../components/Logo';
 import { User, Mail, Lock, Phone, ShieldAlert, CheckCircle2, ArrowRight } from 'lucide-react';
 import { registerAccount } from '../api';
 
-export default function RegisterPage({ onLoginSuccess }) {
+export default function RegisterPage({ onLoginSuccess, onRegisterSuccess }) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -30,7 +30,8 @@ export default function RegisterPage({ onLoginSuccess }) {
         phone,
       });
       setSuccessMsg('Đăng ký thành viên MTK thành công! Đang chuyển hướng...');
-      if (onLoginSuccess) await onLoginSuccess();
+      const callback = onRegisterSuccess || onLoginSuccess;
+      if (callback) await callback();
       setTimeout(() => {
         navigate('/');
       }, 700);
